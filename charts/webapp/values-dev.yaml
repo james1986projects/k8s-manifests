@@ -2,6 +2,7 @@ aws: { region: "us-east-1" }
 
 serviceAccount:
   create: true
+  name: webapp
   annotations:
     eks.amazonaws.com/role-arn: "arn:aws:iam::124482837913:role/irsa-webapp-dev-webapp"
 
