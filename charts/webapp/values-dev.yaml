@@ -1,0 +1,35 @@
+aws: { region: "us-east-1" }
+
+serviceAccount:
+  create: true
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::124482837913:role/irsa-webapp-dev-webapp"
+
+image:
+  repository: "124482837913.dkr.ecr.us-east-1.amazonaws.com/eks-gitops-app"
+  tag: "webapp-msk-dev"
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
+
+env:
+  - name: AWS_REGION
+    value: "us-east-1"
+  - name: KAFKA_BOOTSTRAP_SERVERS
+    value: "boot-dulb3pqv.c3.kafka-serverless.us-east-1.amazonaws.com:9098"
+  - name: KAFKA_SECURITY_PROTOCOL
+    value: "SASL_SSL"
+  - name: KAFKA_SASL_MECHANISM
+    value: "AWS_MSK_IAM"
+  - name: DB_HOST
+    value: "eks-gitops-dev-appdb.c0hu4k6kafe2.us-east-1.rds.amazonaws.com"
+  - name: DB_PORT
+    value: "5432"
+
+envFrom:
+  - secretRef: { name: db-conn }
+
+secrets:
+  dbArn: "arn:aws:secretsmanager:us-east-1:124482837913:secret:eks-gitops/dev/webapp/db-Os67N2"
