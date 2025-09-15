@@ -1,0 +1,18 @@
+replicaCount: 1
+image:
+  repository: public.ecr.aws/docker/library/busybox
+  tag: "latest"
+  pullPolicy: IfNotPresent
+command: ["/bin/sh","-c"]
+args: ["while true; do echo $(date) worker alive; sleep 30; done"]
+resources:
+  requests: { cpu: 20m, memory: 64Mi }
+  limits:   { cpu: 200m, memory: 256Mi }
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+env: []
+envFrom: []
+aws:
+  region: us-east-1

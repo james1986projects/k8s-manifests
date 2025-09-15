@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingest-producer-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/james1986projects/k8s-manifests.git"
+    targetRevision: master
+    path: charts/worker
+    helm:
+      valueFiles: [ values-ingest-producer-dev.yaml ]
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: webapp-dev
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
